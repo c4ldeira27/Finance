@@ -1,4 +1,5 @@
-﻿using Finance.Infrastructure.Identity;
+﻿using Finance.Application.Abstractions.Identity;
+using Finance.Infrastructure.Identity;
 using Finance.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,8 @@ namespace Finance.Infrastructure
             })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddSignInManager();
+
+            services.AddScoped<IIdentityService, IdentityService>();
 
             return services;
 
