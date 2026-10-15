@@ -17,6 +17,7 @@ namespace Finance.Infrastructure.Persistence.Configuration
 
             builder.Property(x => x.Description).HasMaxLength(Transaction.DescriptionMaxLength).IsRequired();
             builder.Property(x => x.UserId).IsRequired();
+            builder.Property(x => x.Amount).HasPrecision(18, 2);
 
 
             builder.HasOne<ApplicationUser>().WithMany().HasForeignKey(x => x.UserId);
