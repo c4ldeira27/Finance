@@ -10,6 +10,7 @@ namespace Finance.Infrastructure.Identity
     {
         private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
+
         public async Task<LoginResult> LoginAsync(string email, string password)
         {
             var result = await _signInManager.PasswordSignInAsync(email, password, isPersistent: false, lockoutOnFailure: true);

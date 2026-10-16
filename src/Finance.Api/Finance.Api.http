@@ -1,6 +1,60 @@
-@Finance.Api_HostAddress = http://localhost:5177
+@host = https://localhost:7257
+@email = vinicius@teste.com
+@password = Teste@12345
 
-GET {{Finance.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### 1. Registro com senha fraca → esperado 400 com a lista de regras
+POST {{host}}/api/v1/auth/register
+Content-Type: application/json
 
-###
+{
+  "email": "{{email}}",
+  "password": "abc"
+}
+
+### 2. Registro válido → esperado 201 com o id
+POST {{host}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### 3. Registro duplicado (rode o 2 de novo) → esperado 400 DuplicateUserName/DuplicateEmail
+POST {{host}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### 4. Login → esperado 204 com o header Set-Cookie
+# @name login
+POST {{host}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### 5. Me com o cookie → esperado 200
+GET {{host}}/api/v1/auth/me
+Cookie: {{login.response.headers.Set-Cookie}}
+
+### 6. Me sem cookie → esperado 401
+GET {{host}}/api/v1/auth/me
+
+### 7. Logout → esperado 204, com Set-Cookie expirando o cookie
+POST {{host}}/api/v1/auth/logout
+Cookie: {{login.response.headers.Set-Cookie}}
+
+### 8. Login com senha errada → rode 5 vezes: 401, 401, 401, 401, 429
+POST {{host}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "SenhaErrada@1"
+}

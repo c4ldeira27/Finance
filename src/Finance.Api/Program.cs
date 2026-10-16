@@ -1,3 +1,4 @@
+using Finance.Api.Endpoints;
 using Finance.Api.Extensions;
 using Finance.Infrastructure;
 
@@ -19,8 +20,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapAuthEndpoints();
 
 
 
