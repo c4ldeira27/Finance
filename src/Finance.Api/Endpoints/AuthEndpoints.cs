@@ -12,10 +12,10 @@ namespace Finance.Api.Endpoints
             var group = app.MapGroup("api/v1/auth").WithTags("Auth");
 
 
-            group.MapPost("register", Register);
-            group.MapPost("login", Login);
-            group.MapPost("logout", Logout).RequireAuthorization();
-            group.MapGet("me", Me).RequireAuthorization();
+            group.MapPost("register", Register).AllowAnonymous();
+            group.MapPost("login", Login).AllowAnonymous();
+            group.MapPost("logout", Logout);
+            group.MapGet("me", Me);
 
 
         }

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Finance.Api.Identity;
+using Finance.Application.Abstractions.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Finance.Api.Extensions
 {
@@ -29,7 +32,13 @@ namespace Finance.Api.Extensions
                 };
             });
 
-            services.AddAuthorization();
+            services.AddAuthorizationBuilder()
+                .SetFallbackPolicy(new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build());
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentUser, CurrentUser>();
 
             return services;
         }
